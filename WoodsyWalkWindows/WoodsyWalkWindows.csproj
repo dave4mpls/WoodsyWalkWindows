@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="GameView\WoodsyBoardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,11 +74,8 @@
     <Compile Include="GameModel\WoodsyBoardData.cs" />
     <Compile Include="GameModel\WoodsyGameData.cs" />
     <Compile Include="GameView\PieceView.cs" />
-    <Compile Include="GameView\WoodsyBoardView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GameView\WoodsyBoardView.Designer.cs">
-      <DependentUpon>WoodsyBoardView.cs</DependentUpon>
+    <Compile Include="GameView\WoodsyBoardView.xaml.cs">
+      <DependentUpon>WoodsyBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

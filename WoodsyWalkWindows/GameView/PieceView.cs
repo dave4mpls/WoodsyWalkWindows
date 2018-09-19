@@ -44,9 +44,7 @@ namespace WoodsyWalkWindows.GameView
 
         private SolidColorBrush mLightGreenBrush, mDarkGreenBrush, mYellowBrush, mRedBrush, mPurpleBrush, mBlueBrush;
         private SolidColorBrush mBrownBrush, mGoldBrush, mSilverBrush, mBlackBrush, mEdgeGreenBrush, mLightBlueBrush;
-        private float mTextWidth;
-        private float mTextHeight;
-        private SolidColorBrush[] personHouseBrushs;
+        private SolidColorBrush[] personHouseBrushes;
 
         static PieceView()
         {
@@ -84,15 +82,15 @@ namespace WoodsyWalkWindows.GameView
             mRedBrush = Brushes.Red; mBlueBrush = Brushes.Blue; mYellowBrush = Brushes.Yellow;
             mPurpleBrush = Brushes.Purple;
             // Prepare the person house paints color array.
-            this.personHouseBrushs = new SolidColorBrush[Pieces.numberOfPeople()];
+            this.personHouseBrushes = new SolidColorBrush[Pieces.numberOfPeople()];
             for (int i = 0; i < Pieces.numberOfPeople(); i++)
             {
-                if (i == 0) this.personHouseBrushs[i] = this.mRedBrush;
-                if (i == 1) this.personHouseBrushs[i] = this.mYellowBrush;
-                if (i == 2) this.personHouseBrushs[i] = this.mBlueBrush;
-                if (i == 3) this.personHouseBrushs[i] = this.mPurpleBrush;
-                if (i == 4) this.personHouseBrushs[i] = this.mGoldBrush;  // right now we only have 4 pairs of houses/people.  If we get more maybe we will add more colors!
-                if (i == 5) this.personHouseBrushs[i] = this.mSilverBrush;
+                if (i == 0) this.personHouseBrushes[i] = this.mRedBrush;
+                if (i == 1) this.personHouseBrushes[i] = this.mYellowBrush;
+                if (i == 2) this.personHouseBrushes[i] = this.mBlueBrush;
+                if (i == 3) this.personHouseBrushes[i] = this.mPurpleBrush;
+                if (i == 4) this.personHouseBrushes[i] = this.mGoldBrush;  // right now we only have 4 pairs of houses/people.  If we get more maybe we will add more colors!
+                if (i == 5) this.personHouseBrushes[i] = this.mSilverBrush;
             }
 
             // Invalidate the control so it redraws
@@ -176,12 +174,15 @@ namespace WoodsyWalkWindows.GameView
         {
             //-- Draws the roads and gems on the piece.
             // do roads first
-            double strokeWidth = Math.Abs(x2 - x1) * 0.1;
+            double strokeWidth = Math.Abs(x2 - x1) * 0.08;
             x1 += strokeWidth / 2; y1 += strokeWidth / 2; x2 -= strokeWidth / 2; y2 -= strokeWidth / 2;
             double cx = (x2 + x1) / 2;
             double cy = (y2 + y1) / 2;
             SolidColorBrush brown = this.mBrownBrush;
             Pen pn = new Pen(brown, strokeWidth);
+            pn.EndLineCap = PenLineCap.Round;
+            pn.StartLineCap = PenLineCap.Round;
+            pn.LineJoin = PenLineJoin.Round;
             if (Pieces.up(p)) DC.DrawLine(pn, new Point(cx, y1), new Point(cx, cy));
             if (Pieces.down(p)) DC.DrawLine(pn, new Point(cx, y2), new Point(cx, cy));
             if (Pieces.left(p)) DC.DrawLine(pn, new Point(x1, cy), new Point(cx, cy));
@@ -243,10 +244,13 @@ namespace WoodsyWalkWindows.GameView
             double paddingLeft = 0; 
             double paddingTop = 0;  
             double paddingRight = 0; 
-            double paddingBottom = 0; 
+            double paddingBottom = 0;
 
-            double contentWidth = this.Width - paddingLeft - paddingRight;
-            double contentHeight = this.Height - paddingTop - paddingBottom;
+            double clientWidth = this.RenderSize.Width;
+            double clientHeight = this.RenderSize.Height;
+
+            double contentWidth = clientWidth - paddingLeft - paddingRight;
+            double contentHeight = clientHeight - paddingTop - paddingBottom;
 
             // Draw the piece.  Start with the background fill.
             SolidColorBrush bgFill;
@@ -269,7 +273,7 @@ namespace WoodsyWalkWindows.GameView
             Pen p = new Pen(bgFill, 1);
             DC.DrawRectangle(bgFill, p, new Rect(paddingLeft, paddingTop, contentWidth, contentHeight));
             // Now, add the black border.
-            p = new Pen(mBlackBrush, 3);
+            p = new Pen(mBlackBrush, 1);
             DC.DrawRectangle(null, p, new Rect(paddingLeft, paddingTop, contentWidth, contentHeight));
             // If it is the end of turn piece, draw a circle with a line, then we are done.
             if (Pieces.isEndOfTurn(this.mPiece))
@@ -287,27 +291,28 @@ namespace WoodsyWalkWindows.GameView
             SolidColorBrush phBrush;
             if (Pieces.isPerson(this.mPiece))
             {
-                phBrush = this.personHouseBrushs[Pieces.personNumber(this.mPiece) - 1];
+                phBrush = this.personHouseBrushes[Pieces.personNumber(this.mPiece) - 1];
                 this.drawPerson(DC, phBrush, paddingLeft + contentWidth / 2, 2 + paddingTop, ((int)(contentWidth * 0.4)), contentHeight - 4);
             }
             else if (Pieces.isHouse(this.mPiece))
             {
-                phBrush = this.personHouseBrushs[Pieces.houseNumber(this.mPiece) - 1];
+                phBrush = this.personHouseBrushes[Pieces.houseNumber(this.mPiece) - 1];
                 this.drawHouse(DC, phBrush, paddingLeft + contentWidth / 2, 2 + paddingTop, ((int)(contentWidth * 0.4)), contentHeight - 4);
             }
             else
             {
                 if (Pieces.personNumber(this.mPiece) > 0)
                 {
-                    phBrush = this.personHouseBrushs[Pieces.personNumber(this.mPiece) - 1];
+                    phBrush = this.personHouseBrushes[Pieces.personNumber(this.mPiece) - 1];
                     this.drawPerson(DC, phBrush, paddingLeft + contentWidth / 4, 2 + paddingTop, ((int)(contentWidth * 0.4)), contentHeight - 4);
                 }
                 if (Pieces.houseNumber(this.mPiece) > 0)
                 {
-                    phBrush = this.personHouseBrushs[Pieces.houseNumber(this.mPiece) - 1];
+                    phBrush = this.personHouseBrushes[Pieces.houseNumber(this.mPiece) - 1];
                     this.drawHouse(DC, phBrush, paddingLeft + (contentWidth * 3) / 4, 2 + paddingTop, ((int)(contentWidth * 0.4)), contentHeight - 4);
                 }
             }
         }
+
     }
 }

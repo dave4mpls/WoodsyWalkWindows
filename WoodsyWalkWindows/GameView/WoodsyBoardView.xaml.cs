@@ -48,6 +48,9 @@ namespace WoodsyWalkWindows.GameView
                     pv.setCol(c); pv.setRow(r);
                     pv.setPiece(board.getCell(c, r));
                     Grid.SetRow(pv, r); Grid.SetColumn(pv, c);
+                    //ContentControl bv = new ContentControl();
+                    //bv.Content = c + "," + r;
+                    //Grid.SetRow(bv, r); Grid.SetColumn(bv, c);
                     BoardGrid.Children.Add(pv);
                 }
             }

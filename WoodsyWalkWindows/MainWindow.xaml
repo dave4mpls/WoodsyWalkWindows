@@ -4,9 +4,124 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WoodsyWalkWindows"
+        xmlns:gameview="clr-namespace:WoodsyWalkWindows.GameView"
         mc:Ignorable="d"
         Title="WoodsyWalk" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="GameTitle">
+            <Setter Property="FontSize" Value="48" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="SubTitle">
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Margin" Value="20,20,20,20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="36" />
+            <Setter Property="Margin" Value="10,10,10,10" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="Turquoise" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Padding" Value="10,10,10,10" />
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Green" Offset="0.0" />
+            <GradientStop Color="LightGreen" Offset="1.0" />
+        </LinearGradientBrush>
+    </Window.Background>
     <Grid x:Name="MainGrid">
-        
+        <Grid x:Name="StartGameGrid" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk"  />
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Select Number of Players" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" />
+            <Button x:Name="OnePlayer" Grid.Row="2" Grid.Column="0" Content="One Player"  />
+            <Button x:Name="TwoPlayers" Grid.Row="2" Grid.Column="1" Content="Two Players"  />
+            <Button x:Name="ThreePlayers" Grid.Row="3" Grid.Column="0" Content="Three Players"  />
+            <Button x:Name="FourPlayers" Grid.Row="3" Grid.Column="1" Content="Four Players"  />
+        </Grid>
+        <Grid x:Name="PlayerNameGrid" Visibility="Visible">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Edit Player Names" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" />
+            <TextBox x:Name="Player1Name" Text="Player 1" Grid.Row="2" Grid.Column="0"  />
+            <TextBox x:Name="Player2Name" Text="Player 2" Grid.Row="2" Grid.Column="1"  />
+            <TextBox x:Name="Player3Name" Text="Player 3" Grid.Row="3" Grid.Column="0"  />
+            <TextBox x:Name="Player4Name" Text="Player 4" Grid.Row="3" Grid.Column="1"  />
+            <Button x:Name="StartGameButton" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Start Game"  />
+        </Grid>
+        <Grid x:Name="PlayGameGrid" Visibility="Hidden">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="PlayButton" Grid.Row="0" Grid.Column="0" Content="Play" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <Button x:Name="DiscardButton" Grid.Row="0" Grid.Column="1" Content="Discard" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="0" Content="Undo" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <Button x:Name="RestartButton" Grid.Row="1" Grid.Column="1" Content="Restart" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <Button x:Name="RulesButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Rules" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <TextBlock x:Name="YourNextPieceText" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Your Next Piece:" FontSize="24" Margin="5,5,5,5" FontWeight="Bold" />
+                    <Viewbox Stretch="Uniform" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                        <gameview:PieceView x:Name="NextPiece" Width="50" Height="50" />
+                    </Viewbox>
+                    <TextBlock x:Name="PiecesLeftText" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="(Pieces Left: x)" FontSize="20" Margin="5,5,5,5" FontWeight="Bold" />
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="0">
+                    
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

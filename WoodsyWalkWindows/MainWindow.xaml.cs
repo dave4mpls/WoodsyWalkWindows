@@ -25,6 +25,13 @@ namespace WoodsyWalkWindows
         public MainWindow()
         {
             InitializeComponent();
+            BoardTest();
+        }
+
+        public void BoardTest()
+        {
+            StartGameGrid.Visibility = Visibility.Visible;
+            PlayGameGrid.Visibility = Visibility.Hidden;
         }
 
         public void PieceTest()
