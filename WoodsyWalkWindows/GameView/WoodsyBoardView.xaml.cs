@@ -7,16 +7,47 @@ namespace WoodsyWalkWindows.GameView
     /// <summary>
     /// Interaction logic for WoodsyBoardView.xaml
     /// </summary>
+    /// 
+
+    // Helper class for event passing
+    public class BoardCellClickEventArgs : RoutedEventArgs
+    {
+        private int _col, _row;
+        public BoardCellClickEventArgs(int col, int row)
+        {
+            _col = col; _row = row;
+        }
+        public int col {  get { return _col;  } }
+        public int row {  get { return _row; } }
+    }
+
+    // Main board view class
     public partial class WoodsyBoardView : UserControl
     {
         private WoodsyBoardData board = new WoodsyBoardData();
         private bool testMode = false;
         private bool readOnlyMode = false;
 
+        public static readonly RoutedEvent BoardCellClickEvent = EventManager.RegisterRoutedEvent(
+            "BoardCellClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(WoodsyBoardView));
+
         public WoodsyBoardView()
         {
             InitializeComponent();
             setupTable();
+        }
+
+        public event RoutedEventHandler BoardCellClick
+        {
+            add { AddHandler(BoardCellClickEvent, value); }
+            remove { RemoveHandler(BoardCellClickEvent, value); }
+        }
+
+        void RaiseBoardCellClickEvent(int col, int row)
+        {
+            RoutedEventArgs newEventArgs = new BoardCellClickEventArgs(col, row);
+            newEventArgs.RoutedEvent = WoodsyBoardView.BoardCellClickEvent;
+            RaiseEvent(newEventArgs);
         }
 
         public void setupTable()
@@ -47,6 +78,7 @@ namespace WoodsyWalkWindows.GameView
                     PieceView pv = new PieceView();
                     pv.setCol(c); pv.setRow(r);
                     pv.setPiece(board.getCell(c, r));
+                    pv.Click += handleCellClick;
                     Grid.SetRow(pv, r); Grid.SetColumn(pv, c);
                     //ContentControl bv = new ContentControl();
                     //bv.Content = c + "," + r;
@@ -54,6 +86,13 @@ namespace WoodsyWalkWindows.GameView
                     BoardGrid.Children.Add(pv);
                 }
             }
+        }
+
+        private void handleCellClick(object sender, RoutedEventArgs e)
+        {
+            if (readOnlyMode) return;  // no click events if board is readonly
+            PieceView pv = (PieceView)sender;
+            RaiseBoardCellClickEvent(pv.getCol(), pv.getRow());
         }
 
         public void redrawBoard()

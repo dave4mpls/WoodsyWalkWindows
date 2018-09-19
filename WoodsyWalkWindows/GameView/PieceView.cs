@@ -36,11 +36,10 @@ namespace WoodsyWalkWindows.GameView
     ///     <MyNamespace:PieceView/>
     ///
     /// </summary>
-    public class PieceView : Control
+    public class PieceView : Button
     {
         private int mPiece;      // The piece integer with its bitmap is all we need to know to draw a piece.
         private int mRow, mCol;   // used by callers when this piece is part of a table
-        //private OnClickListener clickListener;
 
         private SolidColorBrush mLightGreenBrush, mDarkGreenBrush, mYellowBrush, mRedBrush, mPurpleBrush, mBlueBrush;
         private SolidColorBrush mBrownBrush, mGoldBrush, mSilverBrush, mBlackBrush, mEdgeGreenBrush, mLightBlueBrush;
@@ -100,7 +99,6 @@ namespace WoodsyWalkWindows.GameView
         private void drawHouse(DrawingContext DC, SolidColorBrush brush, double centerX, double topY, double width, double height)
         {
             // Draws a house figure for the piece.
-            Path housePath = new Path();
             double lineWidth = 1;       // line width is always 1 for a house, since it is filled and we want sharp corners
             topY += lineWidth / 2 + 1;
             height -= lineWidth + 2;
@@ -128,8 +126,7 @@ namespace WoodsyWalkWindows.GameView
         private void drawPerson(DrawingContext DC, SolidColorBrush brush, double centerX, double topY, double width, double height)
         {
             // Draws a person figure for the piece.
-            Path housePath = new Path();
-            double lineWidth = (this.Width * 0.12);
+            double lineWidth = (this.RenderSize.Width * 0.12);
             topY += lineWidth / 2 + 1;
             height -= lineWidth + 2;
             width -= lineWidth;
@@ -219,23 +216,6 @@ namespace WoodsyWalkWindows.GameView
         public int getRow() { return mRow; }
         public int getCol() { return mCol; }
 
-        /*
-        @Override
-        public void onClick(View v)
-        {
-            //-- this passes click events to the listener that the parent/owner set
-            if (clickListener != null) clickListener.onClick(v);
-        }
-
-        @Override
-        public void setOnClickListener(OnClickListener listener)
-        {
-            //-- you call this to set what happens when a piece gets clicked
-            this.clickListener = listener;
-        }
-
-        */
-
         protected override void OnRender(DrawingContext DC)
         {
             base.OnRender(DC);
@@ -278,7 +258,7 @@ namespace WoodsyWalkWindows.GameView
             // If it is the end of turn piece, draw a circle with a line, then we are done.
             if (Pieces.isEndOfTurn(this.mPiece))
             {
-                Pen redPen = new Pen(mRedBrush, 15);
+                Pen redPen = new Pen(mRedBrush, 3);
                 DC.DrawEllipse(null, redPen, new Point(paddingLeft + contentWidth / 2, paddingTop + contentHeight / 2), contentWidth / 2 - 10, contentWidth / 2 - 10);
                 DC.DrawLine(redPen, new Point(paddingLeft, paddingTop + contentHeight), new Point(paddingLeft + contentWidth, paddingTop));
                 return;

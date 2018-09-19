@@ -20,6 +20,24 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
+        <Style TargetType="TextBlock" x:Key="Toast">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Padding" Value="8,8,8,8" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Opacity" Value="1.0" />
+        </Style>
+        <Style TargetType="Border" x:Key="ToastBorder">
+            <Setter Property="CornerRadius" Value="16,16,16,16" />
+            <Setter Property="BorderBrush" Value="Yellow" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Yellow" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="Margin" Value="20,20,20,20" />
@@ -34,6 +52,23 @@
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="10,10,10,10" />
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" x:Key="CenterBottomButton">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" x:Key="GamePlayButton">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Padding" Value="5,5,5,5" />
+            <Setter Property="Margin" Value="5,5,5,5" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="BoardCaption">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Padding" Value="5,5,5,5" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="BoardCaptionSmall" BasedOn="{StaticResource BoardCaption}">
+            <Setter Property="FontSize" Value="20" />
         </Style>
     </Window.Resources>
     <Window.Background>
@@ -54,14 +89,14 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk"  />
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Select Number of Players" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" />
-            <Button x:Name="OnePlayer" Grid.Row="2" Grid.Column="0" Content="One Player"  />
-            <Button x:Name="TwoPlayers" Grid.Row="2" Grid.Column="1" Content="Two Players"  />
-            <Button x:Name="ThreePlayers" Grid.Row="3" Grid.Column="0" Content="Three Players"  />
-            <Button x:Name="FourPlayers" Grid.Row="3" Grid.Column="1" Content="Four Players"  />
+            <TextBlock Grid.Row="0" Style="{StaticResource GameTitle}" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk"  />
+            <TextBlock Grid.Row="1" Style="{StaticResource SubTitle}" Grid.Column="0" Grid.ColumnSpan="2" Text="Select Number of Players"  />
+            <Button x:Name="OnePlayer" Click="OnePlayer_Click" Grid.Row="2" Grid.Column="0" Content="One Player"  />
+            <Button x:Name="TwoPlayers" Click="TwoPlayers_Click" Grid.Row="2" Grid.Column="1" Content="Two Players"  />
+            <Button x:Name="ThreePlayers" Click="ThreePlayers_Click" Grid.Row="3" Grid.Column="0" Content="Three Players"  />
+            <Button x:Name="FourPlayers" Click="FourPlayers_Click" Grid.Row="3" Grid.Column="1" Content="Four Players"  />
         </Grid>
-        <Grid x:Name="PlayerNameGrid" Visibility="Visible">
+        <Grid x:Name="PlayerNameGrid" Visibility="Hidden">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
@@ -73,21 +108,22 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk" FontSize="48" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Edit Player Names" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" />
+            <TextBlock Style="{StaticResource GameTitle}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Woodsy Walk"  />
+            <TextBlock Style="{StaticResource SubTitle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Edit Player Names"  />
             <TextBox x:Name="Player1Name" Text="Player 1" Grid.Row="2" Grid.Column="0"  />
             <TextBox x:Name="Player2Name" Text="Player 2" Grid.Row="2" Grid.Column="1"  />
             <TextBox x:Name="Player3Name" Text="Player 3" Grid.Row="3" Grid.Column="0"  />
             <TextBox x:Name="Player4Name" Text="Player 4" Grid.Row="3" Grid.Column="1"  />
-            <Button x:Name="StartGameButton" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Start Game"  />
+            <Button x:Name="BackToPlayersButton" Click="BackToPlayersButton_Click" Style="{StaticResource CenterBottomButton}" Grid.Row="4" Grid.Column="0" Content="Back"  />
+            <Button x:Name="StartGameButton" Click="StartGameButton_Click" Style="{StaticResource CenterBottomButton}" Grid.Row="4" Grid.Column="1" Content="Start Game"  />
         </Grid>
-        <Grid x:Name="PlayGameGrid" Visibility="Hidden">
+        <Grid x:Name="PlayGameGrid" Visibility="Visible" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -107,21 +143,50 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Button x:Name="PlayButton" Grid.Row="0" Grid.Column="0" Content="Play" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
-                    <Button x:Name="DiscardButton" Grid.Row="0" Grid.Column="1" Content="Discard" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
-                    <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="0" Content="Undo" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
-                    <Button x:Name="RestartButton" Grid.Row="1" Grid.Column="1" Content="Restart" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
-                    <Button x:Name="RulesButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Content="Rules" FontSize="24" Padding="5,5,5,5" Margin="5,5,5,5" FontWeight="Bold" Background="Turquoise" />
+                    <Button x:Name="PlayButton" Click="PlayButton_Click" Grid.Row="0" Grid.Column="0" Style="{StaticResource GamePlayButton}" Content="Play"  />
+                    <Button x:Name="DiscardButton" Click="DiscardButton_Click" Grid.Row="0" Grid.Column="1" Style="{StaticResource GamePlayButton}" Content="Discard"  />
+                    <Button x:Name="UndoButton" Click="UndoButton_Click" Grid.Row="1" Grid.Column="0" Style="{StaticResource GamePlayButton}" Content="Undo"  />
+                    <Button x:Name="RestartButton" Click="RestartButton_Click" Grid.Row="1" Grid.Column="1" Style="{StaticResource GamePlayButton}" Content="Restart"  />
+                    <Button x:Name="RulesButton" Click="RulesButton_Click" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Style="{StaticResource GamePlayButton}" Content="Rules"  />
                     <TextBlock x:Name="YourNextPieceText" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="Your Next Piece:" FontSize="24" Margin="5,5,5,5" FontWeight="Bold" />
                     <Viewbox Stretch="Uniform" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-                        <gameview:PieceView x:Name="NextPiece" Width="50" Height="50" />
+                        <gameview:PieceView x:Name="NextPiece" Width="50" Height="50" Click="NextPiece_Click" />
                     </Viewbox>
                     <TextBlock x:Name="PiecesLeftText" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="(Pieces Left: x)" FontSize="20" Margin="5,5,5,5" FontWeight="Bold" />
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="0">
-                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource BoardCaption}" x:Name="BoardCaption1" HorizontalAlignment="Center" Text="Player 1's Board (30 Coins)" />
+                    <Viewbox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+                        <gameview:WoodsyBoardView x:Name="Board1" Height="500" Width="500" BoardCellClick="Board1_BoardCellClick"/>
+                    </Viewbox>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Style="{StaticResource BoardCaptionSmall}" x:Name="BoardCaption2" HorizontalAlignment="Center" Text="Player 2's Board&#x0a;(30 Coins)" />
+                    <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource BoardCaptionSmall}" x:Name="BoardCaption3" HorizontalAlignment="Center" Text="Player 3's Board&#x0a;(30 Coins)" />
+                    <TextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource BoardCaptionSmall}" x:Name="BoardCaption4" HorizontalAlignment="Center" Text="Player 4's Board&#x0a;(30 Coins)" />
+                    <Viewbox Grid.Column="0" Grid.Row="3" >
+                        <gameview:WoodsyBoardView x:Name="Board2" Height="500" Width="500"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="1" Grid.Row="3" >
+                        <gameview:WoodsyBoardView x:Name="Board3" Height="500" Width="500"/>
+                    </Viewbox>
+                    <Viewbox Grid.Column="2" Grid.Row="3" >
+                        <gameview:WoodsyBoardView x:Name="Board4" Height="500" Width="500"/>
+                    </Viewbox>
                 </Grid>
             </Grid>
+            <Border Style="{StaticResource ToastBorder}" x:Name="ToastEdge" Grid.Row="1" Grid.Column="0">
+                <TextBlock x:Name="ToastText" Style="{StaticResource Toast}" TextWrapping="WrapWithOverflow" Visibility="Visible" Text="Toast"  />
+            </Border>
         </Grid>
     </Grid>
 </Window>

@@ -41,7 +41,7 @@ namespace WoodsyWalkWindows.GameModel
         private Coordinates personCoordinates = new Coordinates(0, 0); // track where the person is during person move
         private String lastErrorMessage = "";
 
-        WoodsyGameData(List<String> inputParticipantIds)
+        public WoodsyGameData(List<String> inputParticipantIds)
         {
             // Constructor: create a Woodsy game data structure based on the supplied player ID's.
             this.lastErrorMessage = "";
@@ -200,7 +200,7 @@ namespace WoodsyWalkWindows.GameModel
         }
 
         //--- Prices in coins for various in-game actions.
-        public int priceRotation() { return 1; }
+        public int priceRotation() { return 0; }
         public int priceOtherBoardPlacement() { return 5; }
         public int priceOwnRemoval() { return 10; }
 
@@ -448,7 +448,7 @@ namespace WoodsyWalkWindows.GameModel
                     housePersonPlayed = true;
                 }
                 else
-                    this.piecesToPlay[this.currentParticipant].RemoveAt(thisPlayedPiece);
+                    this.piecesToPlay[this.currentParticipant].Remove(thisPlayedPiece);
             }
             //--  check if there is now a new minimum number of pieces
             if (this.piecesLeftInBag() < this.minPiecesLeft) this.minPiecesLeft = this.piecesLeftInBag();
